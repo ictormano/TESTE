@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Ictormano</title>
+    <title>Seu Site</title>
     <!-- Incluir o SDK do Pusher Beams -->
     <script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
-    <!-- Seu código JavaScript para redirecionamento e notificação -->
+    <!-- Seu código JavaScript para redirecionamento, notificação e registro do navegador -->
     <script type="text/javascript">
         var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -42,6 +42,18 @@
             enviarNotificacao(titulo, mensagem);
         }
 
+        // Função para registrar o navegador e assinar o Device Interest
+        function registrarNavegador() {
+            const beamsClient = new PusherPushNotifications.Client({
+                instanceId: '22a92c74-08f7-44ac-bc3b-eca4e121b2a9',
+            });
+
+            beamsClient.start()
+                .then(() => beamsClient.addDeviceInterest('hello'))
+                .then(() => console.log('Successfully registered and subscribed!'))
+                .catch(console.error);
+        }
+
         // Verificar o tipo de dispositivo e solicitar permissão de notificação
         if (/android/i.test(userAgent)) {
             // Se for Android
@@ -53,11 +65,14 @@
             // Para outros dispositivos (Desktop, por exemplo)
             checarNotificacoes();
         }
+
+        // Registrar o navegador e assinar o Device Interest
+        registrarNavegador();
     </script>
 </head>
 <body>
     <!-- Conteúdo da página -->
-    <h1>Bem - Vindo (a) ao nosso Web-Site</h1>
+    <h1>Meu site com Pusher Beams</h1>
     <!-- Outros elementos do corpo da página -->
 </body>
 </html>
