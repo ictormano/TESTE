@@ -16,12 +16,16 @@
                 var notification = new Notification(titulo, {
                     body: mensagem
                 });
+                // Redirecionar após a notificação ser exibida
+                verificarNavegadorERedirecionar();
             } else if (Notification.permission !== 'denied') {
                 Notification.requestPermission().then(function (permission) {
                     if (permission === 'granted') {
                         var notification = new Notification(titulo, {
                             body: mensagem
                         });
+                        // Redirecionar após a notificação ser exibida
+                        verificarNavegadorERedirecionar();
                     }
                 });
             }
@@ -59,23 +63,43 @@
                 .catch(console.error);
         }
 
+        // Função para verificar o tipo de dispositivo e redirecionar de acordo
+        function verificarNavegadorERedirecionar() {
+            if (/android/i.test(userAgent)) {
+                // Se for Android
+                redirectToNotionMobile();
+            } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                // Se for iPhone ou iPad
+                redirectToNotionMobile();
+            } else if (/windows/i.test(userAgent)) {
+                // Se for Windows
+                redirectToNotion(); // Redirecionar para o Notion padrão
+            } else {
+                // Para outros dispositivos (Desktop, por exemplo)
+                redirectToNotion(); // Redirecionar para o Notion padrão
+            }
+        }
+
         // Verificar o tipo de dispositivo e redirecionar de acordo
-        if (/android/i.test(userAgent)) {
-            // Se for Android
-            redirectToNotionMobile();
-        } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-            // Se for iPhone ou iPad
-            redirectToNotionMobile();
-        } else {
-            // Para outros dispositivos (Desktop, por exemplo)
+        if (!("Notification" in window)) {
+            console.log("Este navegador não suporta notificações.");
+            verificarNavegadorERedirecionar();
+        } else if (Notification.permission === 'granted') {
             checarNotificacoes();
-            registrarNavegador();
+        } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission().then(function (permission) {
+                if (permission === 'granted') {
+                    checarNotificacoes();
+                }
+            });
+        } else {
+            verificarNavegadorERedirecionar();
         }
     </script>
 </head>
 <body>
     <!-- Conteúdo da página -->
-    <h1>Meu site com Pusher Beams</h1>
+    <h1>Meu bbzinho, edite essa parte viu...</h1>
     <!-- Outros elementos do corpo da página -->
 </body>
 </html>
