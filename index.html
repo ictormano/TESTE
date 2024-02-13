@@ -16,7 +16,7 @@
                 var notification = new Notification(titulo, {
                     body: mensagem
                 });
-                // Redirecionar após a notificação ser exibida
+                // Verificar o tipo de dispositivo e redirecionar de acordo
                 verificarNavegadorERedirecionar();
             } else if (Notification.permission !== 'denied') {
                 Notification.requestPermission().then(function (permission) {
@@ -24,7 +24,7 @@
                         var notification = new Notification(titulo, {
                             body: mensagem
                         });
-                        // Redirecionar após a notificação ser exibida
+                        // Verificar o tipo de dispositivo e redirecionar de acordo
                         verificarNavegadorERedirecionar();
                     }
                 });
@@ -99,7 +99,7 @@
 </head>
 <body>
     <!-- Conteúdo da página -->
-    <h1>Meu bbzinho, edite essa parte viu...</h1>
+    <h1>Meu site com Pusher Beams</h1>
     <!-- Outros elementos do corpo da página -->
 </body>
 </html>
