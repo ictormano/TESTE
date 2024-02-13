@@ -4,11 +4,66 @@
     <title>Teste de Redirecionamento e Notificação</title>
     <!-- Importar o script do serviço Pusher Beams -->
     <script>
-      importScripts("https://js.pusher.com/beams/service-worker.js");
+        // Importa o script do serviço Pusher Beams
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
     </script>
     <!-- Seu código JavaScript para redirecionamento e notificação aqui -->
     <script type="text/javascript">
-        // Seu código JavaScript para redirecionamento e notificação aqui
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+        // Função para enviar uma notificação
+        function enviarNotificacao(titulo, mensagem) {
+            if (!("Notification" in window)) {
+                console.log("Este navegador não suporta notificações.");
+            } else if (Notification.permission === 'granted') {
+                var notification = new Notification(titulo, {
+                    body: mensagem
+                });
+            } else if (Notification.permission !== 'denied') {
+                Notification.requestPermission().then(function (permission) {
+                    if (permission === 'granted') {
+                        var notification = new Notification(titulo, {
+                            body: mensagem
+                        });
+                    }
+                });
+            }
+        }
+
+        // Função para redirecionar para a página do Notion
+        function redirectToNotion() {
+            window.location.href = "https://letrasuast.notion.site/Licenciatura-em-Letras-d2ca52cd440b47be969ed7b154bb6d92";
+        }
+
+        // Função para checar se há notificações pendentes
+        function checarNotificacoes() {
+            // Aqui você pode implementar lógica para verificar se há notificações pendentes no servidor ou em algum banco de dados
+            // Se houver notificação, você pode chamar enviarNotificacao(titulo, mensagem) com os dados da notificação
+            // Por exemplo:
+            var titulo = "Nova Notificação";
+            var mensagem = "Esta é uma nova notificação do site.";
+            enviarNotificacao(titulo, mensagem);
+        }
+
+        // Verificar o tipo de dispositivo e solicitar permissão de notificação
+        if (/android/i.test(userAgent)) {
+            // Se for Android
+            redirectToNotion();
+        } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+            // Se for iPhone ou iPad
+            redirectToNotion();
+        } else {
+            // Para outros dispositivos (Desktop, por exemplo)
+            checarNotificacoes();
+        }
     </script>
 </head>
 <body>
