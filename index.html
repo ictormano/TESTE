@@ -16,16 +16,12 @@
                 var notification = new Notification(titulo, {
                     body: mensagem
                 });
-                // Verificar o tipo de dispositivo e redirecionar de acordo
-                verificarNavegadorERedirecionar();
             } else if (Notification.permission !== 'denied') {
                 Notification.requestPermission().then(function (permission) {
                     if (permission === 'granted') {
                         var notification = new Notification(titulo, {
                             body: mensagem
                         });
-                        // Verificar o tipo de dispositivo e redirecionar de acordo
-                        verificarNavegadorERedirecionar();
                     }
                 });
             }
@@ -49,6 +45,8 @@
             var titulo = "Nova Notificação";
             var mensagem = "Esta é uma nova notificação do site.";
             enviarNotificacao(titulo, mensagem);
+            // Verificar o tipo de dispositivo e redirecionar de acordo
+            verificarNavegadorERedirecionar();
         }
 
         // Função para registrar o navegador e assinar o Device Interest
@@ -99,7 +97,7 @@
 </head>
 <body>
     <!-- Conteúdo da página -->
-    <h1>Meu site com Pusher Beams</h1>
+    <h1>Meu site com Pusher Beams 1</h1>
     <!-- Outros elementos do corpo da página -->
 </body>
 </html>
