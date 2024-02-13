@@ -1,21 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Teste de Redirecionamento e Notificação</title>
-    <!-- Importar o script do serviço Pusher Beams -->
-    <script>
-        // Importa o script do serviço Pusher Beams
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }, function(err) {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
-            });
-        }
-    </script>
-    <!-- Seu código JavaScript para redirecionamento e notificação aqui -->
+    <title>Ictormano</title>
+    <!-- Incluir o SDK do Pusher Beams -->
+    <script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
+    <!-- Seu código JavaScript para redirecionamento e notificação -->
     <script type="text/javascript">
         var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -67,6 +56,8 @@
     </script>
 </head>
 <body>
-    <!-- Conteúdo da página, se necessário -->
+    <!-- Conteúdo da página -->
+    <h1>Bem - Vindo (a) ao nosso Web-Site</h1>
+    <!-- Outros elementos do corpo da página -->
 </body>
 </html>
