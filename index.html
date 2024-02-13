@@ -32,6 +32,11 @@
             window.location.href = "https://letrasuast.notion.site/Licenciatura-em-Letras-d2ca52cd440b47be969ed7b154bb6d92";
         }
 
+        // Função para redirecionar para a página do Notion (versão mobile)
+        function redirectToNotionMobile() {
+            window.location.href = "https://letrasuast.notion.site/letrasuast/Licenciatura-em-Letras-Mobile-3c20c5aac0df49139fcfa668f9998e95";
+        }
+
         // Função para checar se há notificações pendentes
         function checarNotificacoes() {
             // Aqui você pode implementar lógica para verificar se há notificações pendentes no servidor ou em algum banco de dados
@@ -54,20 +59,18 @@
                 .catch(console.error);
         }
 
-        // Verificar o tipo de dispositivo e solicitar permissão de notificação
+        // Verificar o tipo de dispositivo e redirecionar de acordo
         if (/android/i.test(userAgent)) {
             // Se for Android
-            redirectToNotion();
+            redirectToNotionMobile();
         } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
             // Se for iPhone ou iPad
-            redirectToNotion();
+            redirectToNotionMobile();
         } else {
             // Para outros dispositivos (Desktop, por exemplo)
             checarNotificacoes();
+            registrarNavegador();
         }
-
-        // Registrar o navegador e assinar o Device Interest
-        registrarNavegador();
     </script>
 </head>
 <body>
