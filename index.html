@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Letras UAST</title>
+    <title>Seu Site</title>
     <!-- Incluir o SDK do Pusher Beams -->
     <script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
     <!-- Seu código JavaScript para redirecionamento, notificação e registro do navegador -->
     <script type="text/javascript">
         var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-        // Função para enviar uma notificação
-        function enviarNotificacao(titulo, mensagem) {
-            if (!("Notification" in window)) {
-                console.log("Este navegador não suporta notificações.");
-            } else if (Notification.permission === 'granted') {
-                var notification = new Notification(titulo, {
-                    body: mensagem
-                });
-            } else if (Notification.permission !== 'denied') {
-                Notification.requestPermission().then(function (permission) {
-                    if (permission === 'granted') {
-                        var notification = new Notification(titulo, {
-                            body: mensagem
-                        });
-                    }
-                });
+        // Função para exibir o botão de solicitação de permissão de notificação
+        function exibirBotaoSolicitarPermissao() {
+            var btnSolicitarPermissao = document.getElementById("btnSolicitarPermissao");
+            if (btnSolicitarPermissao) {
+                btnSolicitarPermissao.style.display = "block";
+            }
+        }
+
+        // Função para solicitar permissão de notificação
+        function solicitarPermissao() {
+            Notification.requestPermission().then(function (permission) {
+                if (permission === 'granted') {
+                    // Se a permissão for concedida, fazer algo
+                    console.log("Permissão concedida para notificações.");
+                }
+            });
+        }
+
+        // Verificar se o navegador suporta notificações
+        if ("Notification" in window) {
+            // Verificar o estado da permissão de notificação
+            if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+                // Exibir o botão de solicitação de permissão
+                window.onload = exibirBotaoSolicitarPermissao;
             }
         }
 
@@ -37,31 +45,7 @@
             window.location.href = "https://letrasuast.notion.site/letrasuast/Licenciatura-em-Letras-Mobile-3c20c5aac0df49139fcfa668f9998e95";
         }
 
-        // Função para checar se há notificações pendentes
-        function checarNotificacoes() {
-            // Aqui você pode implementar lógica para verificar se há notificações pendentes no servidor ou em algum banco de dados
-            // Se houver notificação, você pode chamar enviarNotificacao(titulo, mensagem) com os dados da notificação
-            // Por exemplo:
-            var titulo = "Nova Notificação";
-            var mensagem = "Esta é uma nova notificação do site.";
-            enviarNotificacao(titulo, mensagem);
-            // Verificar o tipo de dispositivo e redirecionar de acordo
-            verificarNavegadorERedirecionar();
-        }
-
-        // Função para registrar o navegador e assinar o Device Interest
-        function registrarNavegador() {
-            const beamsClient = new PusherPushNotifications.Client({
-                instanceId: '22a92c74-08f7-44ac-bc3b-eca4e121b2a9',
-            });
-
-            beamsClient.start()
-                .then(() => beamsClient.addDeviceInterest('hello'))
-                .then(() => console.log('Successfully registered and subscribed!'))
-                .catch(console.error);
-        }
-
-        // Função para verificar o tipo de dispositivo e redirecionar de acordo
+        // Verificar o tipo de dispositivo e redirecionar de acordo
         function verificarNavegadorERedirecionar() {
             if (/android/i.test(userAgent)) {
                 // Se for Android
@@ -78,33 +62,18 @@
             }
         }
 
-        // Função para exibir o botão de solicitação de permissão de notificação
-        function exibirBotaoSolicitarPermissao() {
-            var btnSolicitarPermissao = document.getElementById("btnSolicitarPermissao");
-            if (btnSolicitarPermissao) {
-                btnSolicitarPermissao.style.display = "block";
+        // Verificar se a permissão de notificação foi negada e redirecionar
+        function verificarPermissaoENotificar() {
+            if (Notification.permission === 'granted') {
+                // Se a permissão foi concedida, fazer algo
+                console.log("Permissão concedida para notificações.");
+            } else if (Notification.permission !== 'denied') {
+                // Se a permissão não foi negada, exibir o botão de solicitação de permissão
+                exibirBotaoSolicitarPermissao();
+            } else {
+                // Se a permissão foi negada, redirecionar
+                verificarNavegadorERedirecionar();
             }
-        }
-
-        // Função para solicitar permissão de notificação
-        function solicitarPermissao() {
-            Notification.requestPermission().then(function (permission) {
-                if (permission === 'granted') {
-                    checarNotificacoes();
-                }
-            });
-        }
-
-        // Verificar se a permissão de notificação foi negada e exibir o botão de solicitação
-        if (!("Notification" in window)) {
-            console.log("Este navegador não suporta notificações.");
-            verificarNavegadorERedirecionar();
-        } else if (Notification.permission === 'granted') {
-            checarNotificacoes();
-        } else if (Notification.permission !== 'denied') {
-            exibirBotaoSolicitarPermissao();
-        } else {
-            verificarNavegadorERedirecionar();
         }
 
         // Salvar o estado da permissão de notificação no armazenamento local
@@ -113,11 +82,11 @@
 </head>
 <body>
     <!-- Conteúdo da página -->
-    <h1>Meu site c 3</h1>
+    <h1>Meu site com Pusher Beams 1</h1>
     <!-- Texto explicativo sobre a permissão de notificação -->
     <p>Este site gostaria de enviar notificações para informá-lo sobre atividades, eventos ou comunicados da turma de Letras da UAST.</p>
     <!-- Botão para solicitar permissão de notificação -->
-    <button id="btnSolicitarPermissao" style="display: none;" onclick="solicitarPermissao()">Permitir Notificações</button>
+    <button id="btnSolicitarPermissao" style="display: none;" onclick="solicitarPermissao()">Concordo em ser notificado</button>
     <!-- Outros elementos do corpo da página -->
 </body>
 </html>
