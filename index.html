@@ -78,32 +78,6 @@
             }
         }
 
-        // Verificar o tipo de dispositivo e redirecionar de acordo
-        if (!("Notification" in window)) {
-            console.log("Este navegador não suporta notificações.");
-            verificarNavegadorERedirecionar();
-        } else if (Notification.permission === 'granted') {
-            checarNotificacoes();
-        } else if (Notification.permission !== 'denied') {
-            Notification.requestPermission().then(function (permission) {
-                if (permission === 'granted') {
-                    checarNotificacoes();
-                }
-            });
-        } else {
-            verificarNavegadorERedirecionar();
-        }
-    </script>
-</head>
-<body>
-    <!-- Conteúdo da página -->
-    <h1>Meu site 2</h1>
-    <!-- Texto explicativo sobre a permissão de notificação -->
-    <p>Precisamos da sua permissão para enviar notificações informativas sobre atividades, eventos ou comunicados da turma de Letras da UAST.</p>
-    <!-- Botão para solicitar permissão de notificação -->
-    <button id="btnSolicitarPermissao" style="display: none;" onclick="solicitarPermissao()">Permitir Notificações</button>
-
-    <script>
         // Função para exibir o botão de solicitação de permissão de notificação
         function exibirBotaoSolicitarPermissao() {
             var btnSolicitarPermissao = document.getElementById("btnSolicitarPermissao");
@@ -122,10 +96,28 @@
         }
 
         // Verificar se a permissão de notificação foi negada e exibir o botão de solicitação
-        if (Notification.permission === 'denied') {
+        if (!("Notification" in window)) {
+            console.log("Este navegador não suporta notificações.");
+            verificarNavegadorERedirecionar();
+        } else if (Notification.permission === 'granted') {
+            checarNotificacoes();
+        } else if (Notification.permission !== 'denied') {
             exibirBotaoSolicitarPermissao();
+        } else {
+            verificarNavegadorERedirecionar();
         }
+
+        // Salvar o estado da permissão de notificação no armazenamento local
+        window.localStorage.setItem('notificacaoPermissao', Notification.permission);
     </script>
+</head>
+<body>
+    <!-- Conteúdo da página -->
+    <h1>Meu site c 3</h1>
+    <!-- Texto explicativo sobre a permissão de notificação -->
+    <p>Este site gostaria de enviar notificações para informá-lo sobre atividades, eventos ou comunicados da turma de Letras da UAST.</p>
+    <!-- Botão para solicitar permissão de notificação -->
+    <button id="btnSolicitarPermissao" style="display: none;" onclick="solicitarPermissao()">Permitir Notificações</button>
     <!-- Outros elementos do corpo da página -->
 </body>
 </html>
