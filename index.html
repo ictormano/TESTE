@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Seu Site</title>
+    <title>Letras UAST</title>
     <!-- Incluir o SDK do Pusher Beams -->
     <script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
     <!-- Seu código JavaScript para redirecionamento, notificação e registro do navegador -->
@@ -97,7 +97,35 @@
 </head>
 <body>
     <!-- Conteúdo da página -->
-    <h1>Meu site com Pusher Beams 1</h1>
+    <h1>Meu site 2</h1>
+    <!-- Texto explicativo sobre a permissão de notificação -->
+    <p>Precisamos da sua permissão para enviar notificações informativas sobre atividades, eventos ou comunicados da turma de Letras da UAST.</p>
+    <!-- Botão para solicitar permissão de notificação -->
+    <button id="btnSolicitarPermissao" style="display: none;" onclick="solicitarPermissao()">Permitir Notificações</button>
+
+    <script>
+        // Função para exibir o botão de solicitação de permissão de notificação
+        function exibirBotaoSolicitarPermissao() {
+            var btnSolicitarPermissao = document.getElementById("btnSolicitarPermissao");
+            if (btnSolicitarPermissao) {
+                btnSolicitarPermissao.style.display = "block";
+            }
+        }
+
+        // Função para solicitar permissão de notificação
+        function solicitarPermissao() {
+            Notification.requestPermission().then(function (permission) {
+                if (permission === 'granted') {
+                    checarNotificacoes();
+                }
+            });
+        }
+
+        // Verificar se a permissão de notificação foi negada e exibir o botão de solicitação
+        if (Notification.permission === 'denied') {
+            exibirBotaoSolicitarPermissao();
+        }
+    </script>
     <!-- Outros elementos do corpo da página -->
 </body>
 </html>
