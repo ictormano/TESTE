@@ -1,92 +1,83 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Seu Site</title>
-    <!-- Incluir o SDK do OneSignal -->
-    <script src="https://cdn.onesignal.com/sdks/web/v16.0.0/OneSignalSDK.js" defer></script>
-    <script>
-        window.OneSignal = window.OneSignal || [];
-        OneSignal.push(function () {
-            OneSignal.init({
-                appId: "c4b9eb7c-2499-4ddc-ac5b-02a83ee57be1",
-            });
-        });
+  <title>Seu Site</title>
 
-        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  <script src="https://cdn.onesignal.com/sdks/web/v16.0.0/OneSignalSDK.js" defer></script>
+  <script>
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.init({
+        appId: "c4b9eb7c-2499-4ddc-ac5b-02a83ee57be1",
+      });
+    });
 
-        // Função para exibir o botão de solicitação de permissão de notificação
-        function exibirBotaoSolicitarPermissao() {
-            var btnSolicitarPermissao = document.getElementById("btnSolicitarPermissao");
-            if (btnSolicitarPermissao) {
-                btnSolicitarPermissao.style.display = "block";
-            }
+    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    // Função para exibir o botão de solicitação de permissão
+    function exibirBotaoSolicitarPermissao() {
+      var btnSolicitarPermissao = document.getElementById("btnSolicitarPermissao");
+      if (btnSolicitarPermissao) {
+        btnSolicitarPermissao.style.display = "block";
+      }
+    }
+
+    // Função para solicitar permissão de notificação
+    function solicitarPermissao() {
+      Notification.requestPermission().then(function(permission) {
+        if (permission === 'granted') {
+          // Se a permissão for concedida, redirecionar
+          verificarNavegadorERedirecionar();
         }
+      });
+    }
 
-        // Função para solicitar permissão de notificação
-        function solicitarPermissao() {
-            Notification.requestPermission().then(function (permission) {
-                if (permission === 'granted') {
-                    // Se a permissão for concedida, redirecionar
-                    verificarNavegadorERedirecionar();
-                }
-            });
+    // Função para redirecionar para a página do Notion
+    function redirectToNotion() {
+      window.location.href = "https://letrasuast.notion.site/Licenciatura-em-Letras-d2ca52cd440b47be969ed7b154bb6d92";
+    }
+
+    // Função para redirecionar para a página do Notion (versão mobile)
+    function redirectToNotionMobile() {
+      window.location.href = "https://letrasuast.notion.site/letrasuast/Licenciatura-em-Letras-Mobile-3c20c5aac0df49139fcfa668f9998e95";
+    }
+
+    // Função para verificar o tipo de dispositivo e redirecionar de acordo
+    function verificarNavegadorERedirecionar() {
+      if (/android/i.test(userAgent)) {
+        // Se for Android
+        redirectToNotionMobile();
+      } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        // Se for iPhone ou iPad
+        redirectToNotionMobile();
+      } else if (/windows/i.test(userAgent)) {
+        // Se for Windows
+        redirectToNotion(); // Redirecionar para o Notion padrão
+      } else {
+        // Para outros dispositivos (Desktop, por exemplo)
+        redirectToNotion(); // Redirecionar para o Notion padrão
+      }
+    }
+
+    // Função para verificar a permissão e redirecionar após o carregamento da página
+    window.onload = function() {
+      Notification.requestPermission().then(function(permission) {
+        if (permission === 'granted') {
+          // Se a permissão for concedida, redirecionar
+          verificarNavegadorERedirecionar();
+        } else if (permission === 'denied') {
+          // Se a permissão for negada, redirecionar
+          verificarNavegadorERedirecionar();
+        } else {
+          // Se a permissão não foi definida, exibir o botão de solicitação de permissão
+          exibirBotaoSolicitarPermissao();
         }
-
-        // Função para redirecionar para a página do Notion
-        function redirectToNotion() {
-            window.location.href = "https://letrasuast.notion.site/Licenciatura-em-Letras-d2ca52cd440b47be969ed7b154bb6d92";
-        }
-
-        // Função para redirecionar para a página do Notion (versão mobile)
-        function redirectToNotionMobile() {
-            window.location.href = "https://letrasuast.notion.site/letrasuast/Licenciatura-em-Letras-Mobile-3c20c5aac0df49139fcfa668f9998e95";
-        }
-
-        // Função para verificar o tipo de dispositivo e redirecionar de acordo
-        function verificarNavegadorERedirecionar() {
-            if (/android/i.test(userAgent)) {
-                // Se for Android
-                redirectToNotionMobile();
-            } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                // Se for iPhone ou iPad
-                redirectToNotionMobile();
-            } else if (/windows/i.test(userAgent)) {
-                // Se for Windows
-                redirectToNotion(); // Redirecionar para o Notion padrão
-            } else {
-                // Para outros dispositivos (Desktop, por exemplo)
-                redirectToNotion(); // Redirecionar para o Notion padrão
-            }
-        }
-
-        // Verificar se a permissão de notificação foi negada e redirecionar
-        function verificarPermissaoENotificar() {
-            if (Notification.permission === 'granted') {
-                // Se a permissão foi concedida, redirecionar
-                verificarNavegadorERedirecionar();
-            } else if (Notification.permission !== 'denied') {
-                // Se a permissão não foi negada, exibir o botão de solicitação de permissão
-                exibirBotaoSolicitarPermissao();
-            } else {
-                // Se a permissão foi negada, redirecionar
-                verificarNavegadorERedirecionar();
-            }
-        }
-
-        // Salvar o estado da permissão de notificação no armazenamento local
-        window.localStorage.setItem('notificacaoPermissao', Notification.permission);
-
-        // Verificar a permissão e redirecionar após o carregamento da página
-        window.onload = verificarPermissaoENotificar;
-    </script>
+      });
+    };
+  </script>
 </head>
 <body>
-    <!-- Conteúdo da página -->
-    <h1>tentativa n80</h1>
-    <!-- Texto explicativo sobre a permissão de notificação -->
-    <p>Este site gostaria de enviar notificações para informá-lo sobre atividades, eventos ou comunicados da turma de Letras da UAST.</p>
-    <!-- Botão para solicitar permissão de notificação -->
-    <button id="btnSolicitarPermissao" style="display: none;" onclick="solicitarPermissao()">Concordo em ser notificado</button>
-    <!-- Outros elementos do corpo da página -->
-</body>
-</html>
+  <h1>tentativa n80</h1>
+
+  <p>
+    Este site gostaria de enviar notificações para informá-lo sobre atividades, eventos ou comunicados
